@@ -69,6 +69,7 @@ SET @Age = CAST(@years AS nvarchar(4)) + ' Years ' + CAST(@months AS nvarchar(2)
 RETURN @Age
 
 END;
+
 --End Creating Function
 
 SELECT dbo.fnComputeAge('11/30/2005');
