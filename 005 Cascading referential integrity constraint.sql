@@ -1,12 +1,6 @@
 --Start Preparation
 USE SQLTUTOR;
 
-ALTER TABLE tblPerson
-	DROP CONSTRAINT tblPerson_GenderId_FK;
-
-DROP TABLE tblGender;
-DROP TABLE tblPerson;
-
 CREATE TABLE tblPerson (
 	ID INT PRIMARY KEY NOT NULL, 
 	Name NVARCHAR(50) NOT NULL, 
@@ -42,38 +36,46 @@ SELECT*FROM tblGender;
 SELECT*FROM tblPerson;
 --End Preparation
 
---Set On Delete rule to default
+--First Try
 ALTER TABLE tblPerson
 	DROP CONSTRAINT tblPerson_GenderId_FK
 ALTER TABLE tblPerson 
 	ADD CONSTRAINT tblPerson_GenderId_FK
 	FOREIGN KEY (GenderId) REFERENCES tblGender(ID) ON DELETE SET DEFAULT;
---End
+--End. set On Delete rule to Default
 
---First Try
+--Second Try
+SELECT*FROM tblGender;
+SELECT*FROM tblPerson;
+--End.
+
+--Third Try. pay attention before execute this query
 DELETE FROM tblGender WHERE ID = 2;
---tblGender entire row will be delete and tblPerson.GenderId will become 3 (default constraint called)
+--End. tblGender with ID=2 entire row will be delete and tblPerson.GenderId 
+--will become 3 (default constraint called). execute Second Try to check
 
---Set On Delete rule to NULL
+--Fourth Try
 ALTER TABLE tblPerson
 	DROP CONSTRAINT tblPerson_GenderId_FK
 ALTER TABLE tblPerson 
 	ADD CONSTRAINT tblPerson_GenderId_FK
 	FOREIGN KEY (GenderId) REFERENCES tblGender(ID) ON DELETE SET NULL;
---End
+--End. set On Delete rule to NULL. execute Second Try
 
---Second Try
+--Fifth Try. pay attention before execute this querry
 DELETE FROM tblGender WHERE ID = 1;
---tblGender entire row will be delete and tblPerson.GenderId will become NULL
+--End. tblGender with ID=1 entire row will be delete 
+--and tblPerson.GenderId will become NULL. execute Second Try to check
 
---Set On Delete rule to Cascade
+--Sixth Try
 ALTER TABLE tblPerson
 	DROP CONSTRAINT tblPerson_GenderId_FK
 ALTER TABLE tblPerson 
 	ADD CONSTRAINT tblPerson_GenderId_FK
 	FOREIGN KEY (GenderId) REFERENCES tblGender(ID) ON DELETE CASCADE;
---End
+--End. set On Delete rule to Cascade. execute Second Try
 
---Third Try
+--Seventh Try. pay attention before execute this querry
 DELETE FROM tblGender WHERE ID = 3;
---tblGender entire row will be delete and tblPerson row also deleted
+--End. tblGender with ID=3 entire row will be delete 
+--and tblPerson.GenderId entire row also deleted. execute Second Try to check

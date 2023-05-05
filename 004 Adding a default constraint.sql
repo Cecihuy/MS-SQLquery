@@ -1,11 +1,9 @@
---Start Preparation
+--Start Preparation. 
+/*
+delete all your existing table and their dependency
+also delete previous tutorial in this database
+*/
 USE SQLTUTOR;
-
-ALTER TABLE tblPerson
-	DROP CONSTRAINT tblPerson_GenderId_FK;
-
-DROP TABLE tblGender;
-DROP TABLE tblPerson;
 
 CREATE TABLE tblPerson (
 	ID INT PRIMARY KEY NOT NULL, 
@@ -38,33 +36,39 @@ SELECT*FROM tblGender;
 SELECT*FROM tblPerson;
 --End Preparation
 
---First try
+--First Try
 INSERT INTO tblPerson (ID, Name, Email)
 	VALUES (7,'Rich','r@r.com');
---Without supplying GenderId, result will be Null
+--End. without supplying GenderId
 
---Create default constraint
+--Second Try
+SELECT*FROM tblPerson;
+--End. from First Try query, GenderId return Null
+
+--Third Try
 ALTER TABLE tblPerson
 	ADD CONSTRAINT DF_tblPerson_GenderId
 	DEFAULT 3 FOR GenderId;
---End
-
---Second Try
-INSERT INTO tblPerson (ID, Name, Email)
-	VALUES (8,'Mike','mike@r.com');
---Without supplying GenderId, result will be 3 (default constraint called)
-
---Third Try
-INSERT INTO tblPerson (ID, Name, Email, GenderId)
-	VALUES (9,'Sara','s@r.com', 1);
---With supplying GenderId, result will be 1
+--End. create default constraint
 
 --Fourth Try
+INSERT INTO tblPerson (ID, Name, Email)
+	VALUES (8,'Mike','mike@r.com');
+--End. execute Second Try to check. without supplying GenderId, 
+--result will be 3 (default constraint called)
+
+--Fifth Try
+INSERT INTO tblPerson (ID, Name, Email, GenderId)
+	VALUES (9,'Sara','s@r.com', 1);
+--End. supplying GenderId, result will be 1. execute Second Try to check
+
+--Sixth Try
 INSERT INTO tblPerson (ID, Name, Email, GenderId)
 	VALUES (10,'Johnny','j@r.com', NULL);
---Supplying GenderId with Null, result will be Null (default constraint doesn't called)
+--End. execute Second Try to check. supplying GenderId with Null, 
+--result will be Null (default constraint doesn't called)
 
---Delete default constraint
+--Seventh Try
 ALTER TABLE tblPerson
 	DROP CONSTRAINT DF_tblPerson_GenderId;
---End
+--End. delete default constraint
